@@ -1,2 +1,2 @@
-# hello-world
-测试一下分支，怎么使用
+# prepacker
+prepack初探，顺带研究下webpack
