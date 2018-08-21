@@ -1,37 +1,32 @@
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
 
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 module.exports = {
-	devtool: 'source-map',
-	entry: __dirname + '/app/main.js',
+	devtool: '#source-map',
+	entry: './src/main.js',
 	output: {
-		path: __dirname + '/build',
-		filename: '[hash:8]![name].js'
-	},
-	module: {
-		loaders: [{
-			test: /\.json$/,
-			loader: "json"
-		}, {
-			test: /\.js$/,
-			exclude: /node_modules/,
-			loader: 'babel-loader', //在webpack的module部分的loaders里进行配置即可
-			query: {
-				presets: ['es2015', 'react']
-			}
-		}]
+		filename: 'main.js',
+		path: path.resolve(__dirname, 'dist')
 	},
 	plugins: [
-    new PrepackWebpackPlugin({}),
-    new HtmlWebpackPlugin({
-    	template: __dirname + '/public/index.html'
-    })
-  ],
-	devServer: {
-		contentBase: "./public",
-		colors: true,
-		historyApiFallback: true,
-		inline: true
+		new HtmlWebpackPlugin({
+			filename: 'index.html',
+			template: path.join(__dirname, './public/index.html')
+		}),
+		new PrepackWebpackPlugin({})
+	],
+	module: {
+		rules: [{
+			test: /\.js$/,
+			exclude: path.resolve(__dirname, 'node_modules'),
+			use: {
+				loader: 'babel-loader',
+				options: {
+					presets: ['latest']
+				}
+			}
+		}]
 	}
 }
